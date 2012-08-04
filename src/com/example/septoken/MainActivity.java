@@ -10,6 +10,11 @@ import com.cloudmine.api.rest.CMStore;
 import com.cloudmine.api.rest.callbacks.SimpleCMObjectResponseCallback;
 import com.cloudmine.api.rest.response.SimpleCMObjectResponse;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -20,6 +25,16 @@ public class MainActivity extends FragmentActivity {
 	private static final String APP_ID = "b2dff1d7ef384e0f82a749fb6c723f81"; // Find this in your developer console
 	private static final String API_KEY = "Hackathon";// Find this in your developer 
 
+	private LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    private String locationProvider = LocationManager.NETWORK_PROVIDER;
+    
+    private Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+    private LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+          // Called when a new location is found by the network location provider.
+          lastKnownLocation = location;
+    }
+        
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +43,12 @@ public class MainActivity extends FragmentActivity {
         //CloudMine
         DeviceIdentifier.initialize(getApplicationContext()); // This initializes the unique ID that will be sent with each request to identify this user
         CMApiCredentials.initialize(APP_ID, API_KEY); // This will initialize your credentials
-        updateData("[region_id=/philawest/]");
+        
+        double longitude = lastKnownLocation.getLongitude();
+        double latitude = lastKnownLocation.getLatitude();
+        
+        // Update data with last known lat/long
+        updateData("[region_id=/philawest/]", false);
     }
 
     @Override
@@ -37,11 +57,16 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
     
-    public void updateData(String search) {
+    public void updateData(String search, Boolean location) {
+    	// if we're refreshing the location data
+    	if(location) {
+    		locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
+    	}
         CMStore.getStore().loadApplicationObjectsSearch(search, new SimpleCMObjectResponseCallback(){
         	public void onComplete(SimpleCMObjectResponse response){
         		List<SimpleCMObject> objects = response.getObjects();
         		System.out.println(objects);
+        		locationManager.removeUpdates(locationListener);
         	}
         });
     }
