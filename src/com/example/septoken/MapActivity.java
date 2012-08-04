@@ -1,5 +1,9 @@
 package com.example.septoken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 
@@ -33,7 +37,29 @@ public class MapActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        /** Getting route info */
+		Bundle bundle = new Bundle();
+		bundle = getIntent().getExtras();
+		String jsonBundle = bundle.getString("jsonBundle");
+		
+		JSONArray response;
+		try {
+			response = new JSONArray(jsonBundle);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		/*for (int i = 0; i < response.length(); i++) {
+		    JSONObject row = response.getJSONObject(i);
+		    //id = row.getInt("id");
+		    //name = row.getString("name");
+		}*/
 
+    }
+    
+    public void drawIcons(String type, JSONArray response){
+    	
     }
 
 }
