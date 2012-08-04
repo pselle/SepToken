@@ -28,7 +28,7 @@ public class MainActivity extends FragmentActivity {
         //CloudMine
         DeviceIdentifier.initialize(getApplicationContext()); // This initializes the unique ID that will be sent with each request to identify this user
         CMApiCredentials.initialize(APP_ID, API_KEY); // This will initialize your credentials
-     
+        updateData("[region_id=/philawest/]");
     }
 
     @Override
@@ -41,6 +41,7 @@ public class MainActivity extends FragmentActivity {
         CMStore.getStore().loadApplicationObjectsSearch(search, new SimpleCMObjectResponseCallback(){
         	public void onComplete(SimpleCMObjectResponse response){
         		List<SimpleCMObject> objects = response.getObjects();
+        		System.out.println(objects);
         	}
         });
     }
