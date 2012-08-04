@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class Adapter extends BaseAdapter {
+	
+	String response;
 
 	public int getCount() {
 		// TODO Auto-generated method stub
