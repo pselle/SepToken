@@ -20,6 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.google.android.maps.MapActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/actionbar_background"
+        
         android:orientation="horizontal" >
 
         <ImageButton
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="left"
-            android:src="@drawable/logoiconaction" />
+             />
         <TextView 
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -47,13 +47,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/transitview_button_actionbar_refresh" />
+                 />
             <ImageButton
                 android:id="@+id/actionSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/moreoptionsaction" />
+                 />
         </LinearLayout>
     </LinearLayout>
      <LinearLayout
