@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +54,7 @@ public class DisplayMapActivity extends MapActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.mapview);
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 		mapOverlays = mapView.getOverlays();
@@ -67,6 +68,7 @@ public class DisplayMapActivity extends MapActivity {
 		fl.location_hours = bundle.getString("hours");
 		fl.payment_accepted = bundle.getString("payment_accepted");
 		fl.gps_lat = bundle.getDouble("latitude");
+		Log.i("Geo Tags", Double.toString(bundle.getDouble("latitude")));
 		fl.gps_long = bundle.getDouble("longitude");
 		
 		LinearLayout overlayLayout = (LinearLayout)findViewById(R.id.moreInformation);
@@ -89,6 +91,7 @@ public class DisplayMapActivity extends MapActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}*/
+		addIcons(fl);
 	}
 
 	public void addIcons(FareLocations fl) {
