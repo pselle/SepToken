@@ -13,9 +13,12 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+import android.location.Criteria;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +29,7 @@ public class DisplayMapActivity extends MapActivity {
 	private MapView mapView;
 	private List<Overlay> mapOverlays;
 	private IconItemizedOverlay iconToken;
+	private MyLocationOverlay currentLocationOverlay;
 	private Drawable drawableToken;
 
 	// For GPS things
@@ -54,6 +58,7 @@ public class DisplayMapActivity extends MapActivity {
 		// Getting JSON
 		Bundle bundle = new Bundle();
 		bundle = getIntent().getExtras();
+		boolean singleLocation = bundle.getBoolean("singleLocation");
 		String jsonBundle = bundle.getString("jsonBundle");
 		JSONArray response;
 		try {
@@ -88,13 +93,13 @@ public class DisplayMapActivity extends MapActivity {
 				GeoPoint pointV = new GeoPoint(
 						(int) (Double.parseDouble(fl.gps_lat) * 1E6),
 						(int) (Double.parseDouble(fl.gps_long) * 1E6));
-				String locationAddress = "<font color=\"#F24829\" size=\"17dip\"><b>"
+				String locationName = "<font color=\"#F24829\" size=\"17dip\"><b>"
+						+ fl.location_name + "</b><br/>";
+
+				String locationAddress = "<font color=\"#888888\" size=\"14dip\"><b>"
 						+ fl.location_address + "</b><br/>";
 
-				String locationHours = "<font color=\"#888888\" size=\"14dip\"><b>"
-						+ fl.location_hours + "</b><br/>";
-
-				String title = locationAddress + locationHours;
+				String title = locationName + locationAddress;
 				String details = "Click for more details";
 				OverlayItem overlayvehicle = new OverlayItem(pointV, title,
 						details);
@@ -115,5 +120,20 @@ public class DisplayMapActivity extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	/**
+	 * Display a users location on the map
+	 */
+	public void useGPS(){
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Criteria criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_FINE);
+		criteria.setAltitudeRequired(false);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 3, (LocationListener) this);
+		
+		currentLocationOverlay = new MyLocationOverlay(this, mapView);
+		if (currentLocationOverlay != null)
+			mapOverlays.add(currentLocationOverlay);
 	}
 }

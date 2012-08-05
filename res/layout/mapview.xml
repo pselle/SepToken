@@ -72,6 +72,8 @@
 	        android:apiKey="0kYo8vYMWkrQj0lHw3keLUtoYwf0aiwdCWc31BA"
 	    />
 	   <LinearLayout
+	       android:id="@+id/moreInformation"
+	       
 	        android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content"
 	        android:layout_alignBottom="@+id/mapview"

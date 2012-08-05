@@ -32,6 +32,7 @@ public class CustomBalloon<Item extends OverlayItem> extends BalloonOverlayView<
 		// setup our fields
 		title = (TextView) v.findViewById(R.id.balloon_item_title);
 		snippet = (TextView) v.findViewById(R.id.balloon_item_snippet);
+		
 
 		// implement balloon close
 		ImageView close = (ImageView) v.findViewById(R.id.balloon_close);
@@ -42,6 +43,7 @@ public class CustomBalloon<Item extends OverlayItem> extends BalloonOverlayView<
 		});
 		
 	}
+	
 	
 	@Override
 	protected void setBalloonData(OverlayItem item, ViewGroup parent) {
