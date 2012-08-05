@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cloudmine.api.CMApiCredentials;
+import com.cloudmine.api.CMGeoPoint;
 import com.cloudmine.api.DeviceIdentifier;
 import com.cloudmine.api.SimpleCMObject;
 import com.cloudmine.api.rest.AndroidCMWebService;
@@ -104,7 +105,12 @@ public class DisplayListFragment extends Fragment {
 					FareLocations fare = new FareLocations();
 					fare.location_name = list.get(i).getString("location_name");
 					fare.location_address = list.get(i).getString("location_address");
-					fare.location_hours = list.get(1).getString("hours");
+					fare.location_hours = list.get(i).getString("hours");
+					fare.payment_accepted = list.get(i).getString("payment_accepted");
+					CMGeoPoint gp = list.get(i).getGeoPoint("location");
+					fare.gps_lat = gp.getLatitude();
+					fare.gps_long = gp.getLongitude();
+					
 					alfl.add(fare);
 				}
 					

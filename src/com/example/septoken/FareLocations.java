@@ -5,8 +5,8 @@ public class FareLocations {
 	public String region_name;
 	public String location_name;
 	public String location_address;
-	public String gps_lat;
-	public String gps_long;
+	public double gps_lat;
+	public double gps_long;
 	public String location_hours;
 	public String fares_sold;
 	public String payment_accepted;

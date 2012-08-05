@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,11 +46,25 @@ public class FareLocationsAdapter extends ArrayAdapter<FareLocations> {
 		//Get the text boxes from the listitem.xml file
 		TextView locationName = (TextView)alertView.findViewById(R.id.name);
 		TextView locationAddress = (TextView)alertView.findViewById(R.id.address);
-
+		ImageView image = (ImageView) alertView.findViewById(R.id.fare_icon);
+		if (paymentsAccepted(fl.payment_accepted)){
+			image.setImageResource(R.drawable.ic_card);
+		}else{
+			image.setImageResource(R.drawable.ic_cash);
+		}
 		locationName.setText(fl.location_name);
 		locationAddress.setText(fl.location_address);
 		
 		
 		return alertView;
 	}
+	
+	public boolean paymentsAccepted (String payments){
+		boolean cardsAccepted = false;
+		if (payments.contains("Z")){
+			cardsAccepted = true;
+		}	
+		return cardsAccepted;
+	}
+	
 }
