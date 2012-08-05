@@ -43,21 +43,13 @@ public class FareLocationsAdapter extends ArrayAdapter<FareLocations> {
 			alertView = (LinearLayout) convertView;
 		}
 		//Get the text boxes from the listitem.xml file
-/*		TextView routeShortName = (TextView)alertView.findViewById(R.id.txtRouteShortName);
-		TextView routeLongName = (TextView)alertView.findViewById(R.id.txtRouteLongName);*/
+		TextView locationName = (TextView)alertView.findViewById(R.id.name);
+		TextView locationAddress = (TextView)alertView.findViewById(R.id.address);
 
-		//Assign the appropriate data from our alert object above
-		//Old code that contained better names for Night Owl service
-		/*if(al.short_name.equals("BSO")){
-			routeShortName.setText("Broad Street Line (Owl Service)");
-			routeLongName.setText(al.long_name);
-		}else if(al.short_name.equals("MFO")){
-			routeShortName.setText("Market Frankford Line (Owl Service)");
-			routeLongName.setText(al.long_name);
-		}else{
-		routeShortName.setText(al.short_name);
-		routeLongName.setText(al.long_name);
-		}*/
+		locationName.setText(fl.location_name);
+		locationAddress.setText(fl.location_address);
+		
+		
 		return alertView;
 	}
 }
