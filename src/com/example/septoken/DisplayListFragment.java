@@ -33,6 +33,8 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class DisplayListFragment extends Fragment {
+	
+	String Region;
 /*	
 	private LocationManager locationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
     private String locationProvider = LocationManager.NETWORK_PROVIDER;
@@ -80,6 +82,7 @@ public class DisplayListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment, used for dividers
+		//Region = this.getArguments().getString("Region");
 		return inflater.inflate(R.layout.listview, container, false);
 	}
 	
@@ -142,6 +145,7 @@ public class DisplayListFragment extends Fragment {
 					fare.location_address = list.get(i).getString("location_address");
 					fare.location_hours = list.get(i).getString("hours");
 					fare.payment_accepted = list.get(i).getString("payment_accepted");
+					//fare.region_id = list.get(i).getString("__id__");
 					CMGeoPoint gp = list.get(i).getGeoPoint("location");
 						if(gp != null){
 							fare.gps_lat = gp.getLatitude();

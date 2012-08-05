@@ -70,6 +70,7 @@ public class MainActivity extends FragmentActivity {
         		
         	}else if(ID == R.id.WestPhiladelphia){
         		
+        		
         	}else if(ID == R.id.SouthPhiladelphia){
         		
         	}else if(ID == R.id.NorthPhiladelphia){
