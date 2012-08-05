@@ -5,11 +5,11 @@
     android:orientation="vertical" >
 
     <!-- Action Bar: Add Title Element -->
-
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        
+        android:background="@drawable/actionbar_background"
         android:orientation="horizontal" >
 
         <ImageButton
@@ -18,12 +18,12 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="left"
-             />
+            android:src="@drawable/ic_launcher" />
         <TextView 
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:textColor="#ffffff"
                 android:textSize="25sp"
                 android:textStyle="bold"
@@ -32,6 +32,7 @@
         		android:shadowDy="3"
         		android:shadowRadius="2"
         		android:padding="2dp"
+        		android:text="SEPToken"
                 />
         
 
@@ -56,7 +57,7 @@
                  />
         </LinearLayout>
     </LinearLayout>
-     <LinearLayout
+     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:orientation="vertical" 
@@ -70,7 +71,81 @@
 	        android:clickable="true"
 	        android:apiKey="0kYo8vYMWkrQj0lHw3keLUtoYwf0aiwdCWc31BA"
 	    />
-    </LinearLayout>
+	   <LinearLayout
+	        android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content"
+	        android:layout_alignBottom="@+id/mapview"
+	        android:layout_centerHorizontal="true"
+	        android:orientation="vertical" 
+	        android:background="@drawable/map_background_overlay"
+	        >
+	        <TextView 
+                android:id="@+id/hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:shadowColor="#1f427e"
+                android:shadowDx="3"
+        		android:shadowDy="3"
+        		android:shadowRadius="2"
+        		android:padding="2dp"
+        		android:text="Mon-Fri 9:00a-5:15p Sat 9:00a-5:15p"
+                />
+	        <TextView 
+                android:id="@+id/soldItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="#ff7e7e"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:shadowColor="#1f427e"
+                android:shadowDx="3"
+        		android:shadowDy="3"
+        		android:shadowRadius="2"
+        		android:padding="2dp"
+        		android:text="Tokens   Maps   Train Tickets"
+                />
+	        <TextView 
+                android:id="@+id/soldItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="left"
+                android:textColor="#ff7e7e"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:shadowColor="#1f427e"
+                android:shadowDx="3"
+        		android:shadowDy="3"
+        		android:shadowRadius="2"
+        		android:padding="2dp"
+        		android:text="Passes: TransPass | Zone 1 2 3 4 A | Suburban | One Day | Monthly | Independence"
+                />
+	        <TextView 
+                android:id="@+id/paymentAccepted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="#96e482"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:shadowColor="#1f427e"
+                android:shadowDx="3"
+        		android:shadowDy="3"
+        		android:shadowRadius="2"
+        		android:padding="2dp"
+        		android:text="Cash and Cards Accepted"
+                />
+
+	    </LinearLayout>
+    </RelativeLayout>
     
      <!-- <RelativeLayout
         android:layout_width="fill_parent"

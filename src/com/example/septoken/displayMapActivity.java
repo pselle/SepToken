@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
@@ -20,7 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
-public class MapActivity extends Activity {
+public class displayMapActivity extends MapActivity {
 
 	private MapView mapView;
 	private List<Overlay> mapOverlays;
@@ -108,5 +109,11 @@ public class MapActivity extends Activity {
 				mapOverlays.add(icon);
 			}
 		}
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
