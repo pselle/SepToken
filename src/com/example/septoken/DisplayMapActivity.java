@@ -22,6 +22,9 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 public class DisplayMapActivity extends MapActivity {
@@ -58,26 +61,133 @@ public class DisplayMapActivity extends MapActivity {
 		// Getting JSON
 		Bundle bundle = new Bundle();
 		bundle = getIntent().getExtras();
-		boolean singleLocation = bundle.getBoolean("singleLocation");
-		String jsonBundle = bundle.getString("jsonBundle");
+		FareLocations fl = new FareLocations();
+		fl.location_name = bundle.getString("name");
+		fl.location_address = bundle.getString("address");
+		fl.location_hours = bundle.getString("hours");
+		fl.payment_accepted = bundle.getString("payment_accepted");
+		fl.gps_lat = bundle.getDouble("latitude");
+		fl.gps_long = bundle.getDouble("longitude");
+		
+		LinearLayout overlayLayout = (LinearLayout)findViewById(R.id.moreInformation);
+		TextView hours = (TextView)findViewById(R.id.hours);
+		hours.setText(fl.location_hours);
+		TextView soldItems = (TextView)findViewById(R.id.soldItems);
+		soldItems.setText(getSoldItems(fl.payment_accepted));
+		TextView passes =  (TextView)findViewById(R.id.passes);
+		passes.setText(getPasses(fl.payment_accepted));
+		TextView paymentAccepted = (TextView)findViewById(R.id.paymentAccepted);
+		paymentAccepted.setText(paymentsAccepted(fl.payment_accepted));
+		overlayLayout.setVisibility(View.VISIBLE);
+		
+		//boolean singleLocation = bundle.getBoolean("singleLocation");
+		/*String jsonBundle = bundle.getString("jsonBundle");
 		JSONArray response;
 		try {
 			response = new JSONArray(jsonBundle);
 			addIcons(response);
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
-	public void addIcons(JSONArray response) {
+	public void addIcons(FareLocations fl) {
 		drawableToken = this.getResources().getDrawable(
 				R.drawable.map_icon_token);
 		iconToken = new IconItemizedOverlay(drawableToken, mapView);
 
-		drawIcons("Fare", response, iconToken);
+		drawIcon(fl, iconToken);
+	}
+	
+	public void drawIcon(FareLocations fl,IconItemizedOverlay icon) {
+		int stopInt = 0;
+
+		GeoPoint pointV = new GeoPoint(
+				(int) ((fl.gps_lat) * 1E6),
+				(int) ((fl.gps_long) * 1E6));
+		String locationName = "<font color=\"#F24829\" size=\"17dip\"><b>"
+				+ fl.location_name + "</b><br/>";
+
+		String locationAddress = "<font color=\"#888888\" size=\"14dip\"><b>"
+				+ fl.location_address + "</b><br/>";
+
+		String title = locationName + locationAddress;
+		String details = "";
+		OverlayItem overlayvehicle = new OverlayItem(pointV, title,
+				details);
+		icon.addOverlay(overlayvehicle);
+		stopInt++;
+
+		if (stopInt > 0) {
+			mapOverlays.add(icon);
+		}
+	}
+	
+	public String getSoldItems(String pa){
+		String paCorrect = "";
+		if (pa.contains("T")){
+			paCorrect += "Tokens|";
+		}
+		if (pa.contains("M")){
+			paCorrect += "Maps|";
+		}
+		if (pa.contains("X")){
+			paCorrect += "Train Tickets|";
+		}
+		return paCorrect;
+	}
+	
+	public String getPasses(String pa){
+		String paCorrect = "Passes: ";
+		if (pa.contains("P")){
+			paCorrect += "Transpass|";
+		}
+		if (pa.contains("1") || pa.contains("2") || pa.contains("3") || pa.contains("4") ||
+				pa.contains("A") || pa.contains("S") || pa.contains("C") || pa.contains("I")||
+				pa.contains("D")){
+			paCorrect += "Passes: ";
+			if (pa.contains("1")){
+				paCorrect += " 1 ";
+			}
+			if (pa.contains("2")){
+				paCorrect += " 2 ";
+			}
+			if (pa.contains("3")){
+				paCorrect += " 3 ";
+			}
+			if (pa.contains("4")){
+				paCorrect += " 4 ";
+			}
+			if (pa.contains("A")){
+				paCorrect += "Anywhere";
+			}
+			if (pa.contains("S")){
+				paCorrect += " Suburban ";
+			}
+			if (pa.contains("C")){
+				paCorrect += " One Day ";
+			}
+			if (pa.contains("I")){
+				paCorrect += " Monthly ";
+			}
+			if (pa.contains("D")){
+				paCorrect += " Independence ";
+			}
+		}
+		
+		return paCorrect;
+	}
+	
+	public String paymentsAccepted (String payments){
+		String cardsAccepted = "Cash Only";
+		if (payments.contains("Z")){
+			cardsAccepted = "Cards and Cash Accepted";
+		}	
+		return cardsAccepted;
 	}
 
-	public void drawIcons(String type, JSONArray response,
+
+	/*public void drawIcons(String type, JSONArray response,
 			IconItemizedOverlay icon) {
 		int stopInt = 0;
 
@@ -115,7 +225,7 @@ public class DisplayMapActivity extends MapActivity {
 				mapOverlays.add(icon);
 			}
 		}
-	}
+	}*/
 
 	@Override
 	protected boolean isRouteDisplayed() {
