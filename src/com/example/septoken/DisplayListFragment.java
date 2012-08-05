@@ -22,7 +22,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -65,6 +68,14 @@ public class DisplayListFragment extends Fragment {
 	private ArrayList<FareLocations> alfl = null;
 	private ListView lstTest;
 	private FareLocationsAdapter flAdapter;
+	
+	static DisplayListFragment newinstance(String region) {
+		DisplayListFragment page = new DisplayListFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("Region", region);
+		page.setArguments(bundle);
+		return page;
+	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -76,6 +87,7 @@ public class DisplayListFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		// Initialize ListView
 		lstTest = (ListView) getActivity().findViewById(R.id.list);
+	//	registerForContextMenu(lstTest);
 		alfl = new ArrayList<FareLocations>();
 		flAdapter = new FareLocationsAdapter(DisplayListFragment.this.getActivity(), R.layout.listrow, alfl);
 		// Set the above adapter as the adapter of choice for our list
@@ -111,7 +123,7 @@ public class DisplayListFragment extends Fragment {
 		});
 	}
 	
-	public void updateData(String search, Boolean location) {
+	public void updateData(String search, Boolean location){
     	// if we're refreshing the location data
     	if(location) {
     	//	locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
@@ -131,8 +143,11 @@ public class DisplayListFragment extends Fragment {
 					fare.location_hours = list.get(i).getString("hours");
 					fare.payment_accepted = list.get(i).getString("payment_accepted");
 					CMGeoPoint gp = list.get(i).getGeoPoint("location");
-					fare.gps_lat = gp.getLatitude();
-					fare.gps_long = gp.getLongitude();
+						if(gp != null){
+							fare.gps_lat = gp.getLatitude();
+							fare.gps_long = gp.getLongitude();
+						}
+					
 					
 					alfl.add(fare);
 				}
@@ -143,4 +158,8 @@ public class DisplayListFragment extends Fragment {
         });
 		
     }
+
+
+
+
 }

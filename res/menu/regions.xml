@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/centerCity" android:title="Center City"/>
+    <item android:id="@+id/CenterCity" android:title="Center City"/>
     <item android:id="@+id/WestPhiladelphia" android:title="West Philadelphia"/>
     <item android:id="@+id/SouthPhiladelphia" android:title="South Philadelphia"/>
     <item android:id="@+id/NorthPhiladelphia" android:title="North Philadelphia"/>

@@ -22,6 +22,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -53,4 +55,51 @@ public class MainActivity extends FragmentActivity {
             fragmentTransaction.commit();
 		}
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.regions, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int ID = item.getItemId();
+        	if(ID == R.id.CenterCity){
+        		
+        	}else if(ID == R.id.WestPhiladelphia){
+        		
+        	}else if(ID == R.id.SouthPhiladelphia){
+        		
+        	}else if(ID == R.id.NorthPhiladelphia){
+        		
+        	}else if(ID == R.id.NortheastPhiladelphia){
+        		
+        	}else if(ID == R.id.NorthwestPhiladelphia){
+        		
+        	}else if(ID == R.id.BucksCounty){
+        		
+        	}else if(ID == R.id.ChesterCounty){
+        		
+        	}else if(ID == R.id.DelawareCounty){
+        		
+        	}else if(ID == R.id.MontgomeryCounty){
+        		
+        	}else if(ID == R.id.DelNJersey){
+        		
+        	}
+        	
+        	
+        		onSearchRequested();
+        		
+        		return true;
+            
+/*            
+        default:
+            return super.onOptionsItemSelected(item);
+*/            
+        
+    }
+    
 }
