@@ -46,10 +46,14 @@ public class FareLocationsAdapter extends ArrayAdapter<FareLocations> {
 		TextView locationName = (TextView)alertView.findViewById(R.id.name);
 		TextView locationAddress = (TextView)alertView.findViewById(R.id.address);
 		TextView locationHour = (TextView) alertView.findViewById(R.id.hours);
+		TextView distant = (TextView) alertView.findViewById(R.id.distance);
 
 		locationName.setText(fl.location_name);
 		locationAddress.setText(fl.location_address);
 		locationHour.setText(fl.location_hours);
+		distant.setVisibility(View.GONE);
+		
+		
 		
 		
 		
