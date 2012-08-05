@@ -11,6 +11,7 @@ import com.cloudmine.api.rest.callbacks.SimpleCMObjectResponseCallback;
 import com.cloudmine.api.rest.response.SimpleCMObjectResponse;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,7 +19,11 @@ import android.location.LocationProvider;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ImageButton;
 
 public class MainActivity extends FragmentActivity {
 	
@@ -29,16 +34,53 @@ public class MainActivity extends FragmentActivity {
     private String locationProvider = LocationManager.NETWORK_PROVIDER;
     
     private Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-    private LocationListener locationListener = new LocationListener() {
+    private LocationListener locationListener = new LocationListener(){
         public void onLocationChanged(Location location) {
           // Called when a new location is found by the network location provider.
           lastKnownLocation = location;
-    }
+        }
+
+		public void onProviderDisabled(String arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// TODO Auto-generated method stub
+			
+		}
+    };
         
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        /** Home button */
+        ImageButton homeButton = (ImageButton) findViewById(R.id.actionLogoIcon);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,
+                        MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        
+        if( savedInstanceState == null ) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+          	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+          	
+          	DisplayListFragment dlf = new DisplayListFragment();
+  			fragmentTransaction.add(R.id.blank_fragment, dlf);
+            fragmentTransaction.commit();
+		}
         
         //CloudMine
         DeviceIdentifier.initialize(getApplicationContext()); // This initializes the unique ID that will be sent with each request to identify this user
@@ -49,12 +91,6 @@ public class MainActivity extends FragmentActivity {
         
         // Update data with last known lat/long
         updateData("[region_id=/philawest/]", false);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
     }
     
     public void updateData(String search, Boolean location) {

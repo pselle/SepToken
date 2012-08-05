@@ -1,14 +1,75 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Action Bar: Add Title Element -->
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        tools:context=".MainActivity" />
+        android:background="@drawable/actionbar_background"
+        android:orientation="horizontal" >
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/actionLogoIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="left"
+            android:src="@drawable/ic_launcher" />
+        <TextView 
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="#ffffff"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:shadowColor="#1f427e"
+                android:shadowDx="3"
+        		android:shadowDy="3"
+        		android:shadowRadius="2"
+        		android:padding="2dp"
+        		android:text="SEPToken"
+                />
+        
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal" >
+            
+            
+            <ImageButton
+                android:id="@+id/actionRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                 />
+            <ImageButton
+                android:id="@+id/actionSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                 />
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/blank_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </FrameLayout>
+    
+     <!-- <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/actionbar_background"
+        android:orientation="horizontal" >
+
+     </RelativeLayout> -->
+
+</LinearLayout>
