@@ -12,17 +12,24 @@ import com.cloudmine.api.rest.CMStore;
 import com.cloudmine.api.rest.CMWebService;
 import com.cloudmine.api.rest.callbacks.SimpleCMObjectResponseCallback;
 import com.cloudmine.api.rest.response.SimpleCMObjectResponse;
+import com.google.android.maps.MapActivity;
+import com.septrip.android.transitView.TransitViewActivity;
+import com.septrip.android.transitView.displayClasses.BusRoutesDisplayFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class DisplayListFragment extends Fragment {
 /*	
@@ -87,6 +94,26 @@ public class DisplayListFragment extends Fragment {
         
         // Update data with last known lat/long
         updateData("[region_id=/philawest/]", false);
+        
+        lstTest.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				String rId = alfl.get(arg2).location_name;
+				
+				Intent intent = new Intent(DisplayListFragment.this.getActivity(),
+						DisplayMapActivity.class);
+				intent.putExtra("shortName", rId);
+				intent.putExtra("vehicle", "Bus");
+				intent.putExtra("reload", 0);
+				DisplayListFragment.this.startActivity(intent);
+
+				// Toast.makeText(getApplicationContext(), "Selected Item: " +
+				// rId , Toast.LENGTH_LONG).show();
+				Log.d("BRoutes", "Item clicked "
+						+ alrts.get(arg2).short_name);
+
+			}
+		});
 	}
 	
 	public void updateData(String search, Boolean location) {
@@ -118,5 +145,6 @@ public class DisplayListFragment extends Fragment {
 				
 			}
         });
+		
     }
 }
