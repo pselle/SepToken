@@ -45,9 +45,12 @@ public class FareLocationsAdapter extends ArrayAdapter<FareLocations> {
 		//Get the text boxes from the listitem.xml file
 		TextView locationName = (TextView)alertView.findViewById(R.id.name);
 		TextView locationAddress = (TextView)alertView.findViewById(R.id.address);
+		TextView locationHour = (TextView) alertView.findViewById(R.id.hours);
 
 		locationName.setText(fl.location_name);
 		locationAddress.setText(fl.location_address);
+		locationHour.setText(fl.location_hours);
+		
 		
 		
 		return alertView;

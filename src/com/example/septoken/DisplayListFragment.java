@@ -104,7 +104,7 @@ public class DisplayListFragment extends Fragment {
 					FareLocations fare = new FareLocations();
 					fare.location_name = list.get(i).getString("location_name");
 					fare.location_address = list.get(i).getString("location_address");
-					fare.location_hours = list.get(1).getString("hours");
+					fare.location_hours = list.get(i).getString("hours");
 					alfl.add(fare);
 				}
 					
