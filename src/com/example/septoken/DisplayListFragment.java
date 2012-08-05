@@ -13,8 +13,6 @@ import com.cloudmine.api.rest.CMWebService;
 import com.cloudmine.api.rest.callbacks.SimpleCMObjectResponseCallback;
 import com.cloudmine.api.rest.response.SimpleCMObjectResponse;
 import com.google.android.maps.MapActivity;
-import com.septrip.android.transitView.TransitViewActivity;
-import com.septrip.android.transitView.displayClasses.BusRoutesDisplayFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -98,19 +96,16 @@ public class DisplayListFragment extends Fragment {
         lstTest.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				String rId = alfl.get(arg2).location_name;
+				String name = alfl.get(arg2).location_name;
 				
 				Intent intent = new Intent(DisplayListFragment.this.getActivity(),
 						DisplayMapActivity.class);
-				intent.putExtra("shortName", rId);
-				intent.putExtra("vehicle", "Bus");
-				intent.putExtra("reload", 0);
+				intent.putExtra("name", name);
+				intent.putExtra("hours", alfl.get(arg2).location_hours);
+				intent.putExtra("payment_accepted", alfl.get(arg2).payment_accepted);
+				intent.putExtra("latitude", alfl.get(arg2).gps_lat);
+				intent.putExtra("longitude", alfl.get(arg2).gps_long);
 				DisplayListFragment.this.startActivity(intent);
-
-				// Toast.makeText(getApplicationContext(), "Selected Item: " +
-				// rId , Toast.LENGTH_LONG).show();
-				Log.d("BRoutes", "Item clicked "
-						+ alrts.get(arg2).short_name);
 
 			}
 		});
@@ -127,6 +122,7 @@ public class DisplayListFragment extends Fragment {
 			public void onCompletion(SimpleCMObjectResponse response) {
 				//System.out.println("Got response!");
 				// System.out.println(response.getObjects());
+				
 				List<SimpleCMObject> list = response.getObjects();
 				for (int i = 0; i < list.size(); i++) {
 					FareLocations fare = new FareLocations();

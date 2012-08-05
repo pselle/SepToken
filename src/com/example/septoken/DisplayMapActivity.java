@@ -86,18 +86,19 @@ public class DisplayMapActivity extends MapActivity {
 			try {
 				row = response.getJSONObject(i);
 				FareLocations fl = new FareLocations();
-				fl.gps_lat = row.getString("gps_lat");
-				fl.gps_long = row.getString("gps_long");
+				fl.gps_lat = row.getDouble("gps_lat");
+				fl.gps_long = row.getDouble("gps_long");
 				fl.location_address = row.getString("location_address");
 				fl.location_hours = row.getString("location_hours");
 				GeoPoint pointV = new GeoPoint(
-						(int) (Double.parseDouble(fl.gps_lat) * 1E6),
-						(int) (Double.parseDouble(fl.gps_long) * 1E6));
+						(int) ((fl.gps_lat) * 1E6),
+						(int) ((fl.gps_long) * 1E6));
 				String locationName = "<font color=\"#F24829\" size=\"17dip\"><b>"
 						+ fl.location_name + "</b><br/>";
 
 				String locationAddress = "<font color=\"#888888\" size=\"14dip\"><b>"
-						+ fl.location_address + "</b><br/>";
+						+ fl.location_address + "</b><br/>"
+						+ fl.payment_accepted + "<br/>";
 
 				String title = locationName + locationAddress;
 				String details = "Click for more details";
