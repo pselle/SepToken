@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
@@ -108,6 +109,13 @@ public class DisplayMapActivity extends MapActivity {
 		GeoPoint pointV = new GeoPoint(
 				(int) ((fl.gps_lat) * 1E6),
 				(int) ((fl.gps_long) * 1E6));
+		
+		minLatitude = (minLatitude > (int) ((fl.gps_lat) * 1E6)) ? (int) ((fl.gps_lat) * 1E6) : minLatitude;
+		maxLatitude = (maxLatitude < (int) ((fl.gps_lat) * 1E6)) ? (int) ((fl.gps_lat) * 1E6) : maxLatitude;
+
+		minLongitude = (minLongitude > (int) ((fl.gps_long) * 1E6)) ? (int) ((fl.gps_long) * 1E6) : minLongitude;
+		maxLongitude = (maxLongitude < (int) ((fl.gps_long) * 1E6)) ? (int) ((fl.gps_long) * 1E6) : maxLongitude;
+		
 		String locationName = "<font color=\"#F24829\" size=\"17dip\"><b>"
 				+ fl.location_name + "</b><br/>";
 
@@ -124,6 +132,14 @@ public class DisplayMapActivity extends MapActivity {
 		if (stopInt > 0) {
 			mapOverlays.add(icon);
 		}
+		MapController mMapController = mapView.getController();
+		mMapController.zoomToSpan((maxLatitude - minLatitude),
+				(maxLongitude - minLongitude));
+		mMapController.animateTo(new GeoPoint(
+				(maxLatitude + minLatitude) / 2,
+				(maxLongitude + minLongitude) / 2));
+		mapView.invalidate();
+		
 	}
 	
 	public String getSoldItems(String pa){
