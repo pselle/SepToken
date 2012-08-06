@@ -15,10 +15,11 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 import android.location.Criteria;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -27,14 +28,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
-public class DisplayMapActivity extends MapActivity {
+public class DisplayMapActivity extends MapActivity implements LocationListener {
 
 	private MapView mapView;
 	private List<Overlay> mapOverlays;
 	private IconItemizedOverlay iconToken;
-	private MyLocationOverlay currentLocationOverlay;
 	private Drawable drawableToken;
 
 	// For GPS things
@@ -45,6 +46,7 @@ public class DisplayMapActivity extends MapActivity {
 																	// Milliseconds
 	private Drawable gpsDrawable;
 	private MyLocationOverlay gpsLoc;
+	private Location location;
 
 	// For determining map position
 	private int minLatitude = (int) (+81 * 1E6);
@@ -59,7 +61,8 @@ public class DisplayMapActivity extends MapActivity {
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 		mapOverlays = mapView.getOverlays();
-
+		useGPS();
+		
 		// Getting JSON
 		Bundle bundle = new Bundle();
 		bundle = getIntent().getExtras();
@@ -94,6 +97,23 @@ public class DisplayMapActivity extends MapActivity {
 		}*/
 		addIcons(fl);
 	}
+	
+	@Override
+	public void onPause() {
+		locationManager.removeUpdates(this);
+		if (gpsLoc != null){
+			gpsLoc.disableMyLocation();
+		}
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		if (gpsLoc != null){
+			gpsLoc.enableMyLocation();
+		}
+		super.onResume();
+	}
 
 	public void addIcons(FareLocations fl) {
 		drawableToken = this.getResources().getDrawable(
@@ -109,12 +129,6 @@ public class DisplayMapActivity extends MapActivity {
 		GeoPoint pointV = new GeoPoint(
 				(int) ((fl.gps_lat) * 1E6),
 				(int) ((fl.gps_long) * 1E6));
-		
-		minLatitude = (minLatitude > (int) ((fl.gps_lat) * 1E6)) ? (int) ((fl.gps_lat) * 1E6) : minLatitude;
-		maxLatitude = (maxLatitude < (int) ((fl.gps_lat) * 1E6)) ? (int) ((fl.gps_lat) * 1E6) : maxLatitude;
-
-		minLongitude = (minLongitude > (int) ((fl.gps_long) * 1E6)) ? (int) ((fl.gps_long) * 1E6) : minLongitude;
-		maxLongitude = (maxLongitude < (int) ((fl.gps_long) * 1E6)) ? (int) ((fl.gps_long) * 1E6) : maxLongitude;
 		
 		String locationName = "<font color=\"#F24829\" size=\"17dip\"><b>"
 				+ fl.location_name + "</b><br/>";
@@ -132,12 +146,28 @@ public class DisplayMapActivity extends MapActivity {
 		if (stopInt > 0) {
 			mapOverlays.add(icon);
 		}
+		
+		if (gpsLoc.getMyLocation() != null){
+			GeoPoint gp = gpsLoc.getMyLocation();
+			minLatitude = (minLatitude > (int) ((fl.gps_lat) * 1E6)) ? (int) ((gp.getLatitudeE6())) : minLatitude;
+			maxLatitude = (maxLatitude < (int) ((fl.gps_lat) * 1E6)) ? (int) ((gp.getLatitudeE6())) : maxLatitude;
+
+			minLongitude = (minLongitude > (int) ((fl.gps_long) * 1E6)) ? (int) ((gp.getLongitudeE6())) : minLongitude;
+			maxLongitude = (maxLongitude < (int) ((fl.gps_long) * 1E6)) ? (int) ((gp.getLongitudeE6())) : maxLongitude;
+		}else{
+			minLatitude = (minLatitude > (int) ((fl.gps_lat) * 1E6)) ? (int) ((fl.gps_lat) * 1E6) : minLatitude;
+			maxLatitude = (maxLatitude < (int) ((fl.gps_lat) * 1E6)) ? (int) ((fl.gps_lat) * 1E6) : maxLatitude;
+	
+			minLongitude = (minLongitude > (int) ((fl.gps_long) * 1E6)) ? (int) ((fl.gps_long) * 1E6) : minLongitude;
+			maxLongitude = (maxLongitude < (int) ((fl.gps_long) * 1E6)) ? (int) ((fl.gps_long) * 1E6) : maxLongitude;
+		}
 		MapController mMapController = mapView.getController();
 		mMapController.zoomToSpan((maxLatitude - minLatitude),
 				(maxLongitude - minLongitude));
 		mMapController.animateTo(new GeoPoint(
 				(maxLatitude + minLatitude) / 2,
 				(maxLongitude + minLongitude) / 2));
+		mMapController.zoomOut();
 		mapView.invalidate();
 		
 	}
@@ -145,55 +175,68 @@ public class DisplayMapActivity extends MapActivity {
 	public String getSoldItems(String pa){
 		String paCorrect = "";
 		if (pa.contains("T")){
-			paCorrect += "Tokens|";
+			paCorrect += "Tokens   ";
 		}
 		if (pa.contains("M")){
-			paCorrect += "Maps|";
+			paCorrect += "Maps   ";
 		}
 		if (pa.contains("X")){
-			paCorrect += "Train Tickets|";
+			paCorrect += "Train Tickets   ";
 		}
+		if (!pa.equals(""))
+			paCorrect = paCorrect.substring(0, paCorrect.lastIndexOf("   "));
 		return paCorrect;
 	}
 	
 	public String getPasses(String pa){
-		String paCorrect = "Passes: ";
-		if (pa.contains("P")){
-			paCorrect += "Transpass|";
-		}
-		if (pa.contains("1") || pa.contains("2") || pa.contains("3") || pa.contains("4") ||
+		String paCorrect = "";
+		if (pa.contains("P") || pa.contains("1") || pa.contains("2") || pa.contains("3") || pa.contains("4") ||
 				pa.contains("A") || pa.contains("S") || pa.contains("C") || pa.contains("I")||
 				pa.contains("D")){
 			paCorrect += "Passes: ";
-			if (pa.contains("1")){
-				paCorrect += " 1 ";
+			
+			if (pa.contains("P")){
+				paCorrect += "Transpasses | ";
 			}
-			if (pa.contains("2")){
-				paCorrect += " 2 ";
+			
+			//Zones
+			if (pa.contains("1") || pa.contains("2") || pa.contains("3") || pa.contains("4")){
+				paCorrect += "Zones: ";
+			
+				if (pa.contains("1")){
+					paCorrect += "1 ";
+				}
+				if (pa.contains("2")){
+					paCorrect += "2 ";
+				}
+				if (pa.contains("3")){
+					paCorrect += "3 ";
+				}
+				if (pa.contains("4")){
+					paCorrect += "4 ";
+				}
+				paCorrect += "| ";
 			}
-			if (pa.contains("3")){
-				paCorrect += " 3 ";
-			}
-			if (pa.contains("4")){
-				paCorrect += " 4 ";
-			}
+			
 			if (pa.contains("A")){
-				paCorrect += "Anywhere";
+				paCorrect += "Anywhere | ";
 			}
 			if (pa.contains("S")){
-				paCorrect += " Suburban ";
+				paCorrect += " Suburban | ";
 			}
 			if (pa.contains("C")){
-				paCorrect += " One Day ";
+				paCorrect += " One Day | ";
 			}
 			if (pa.contains("I")){
-				paCorrect += " Monthly ";
+				paCorrect += " Monthly | ";
 			}
 			if (pa.contains("D")){
-				paCorrect += " Independence ";
+				paCorrect += " Independence | ";
 			}
 		}
-		
+		if (!paCorrect.equals("")){
+			paCorrect = paCorrect.substring(0, paCorrect.lastIndexOf(" | "));
+		}
 		return paCorrect;
 	}
 	
@@ -261,9 +304,45 @@ public class DisplayMapActivity extends MapActivity {
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		criteria.setAltitudeRequired(false);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 3, (LocationListener) this);
+		gpsLoc = new MyLocationOverlay(this, mapView);
+		mapOverlays.add(gpsLoc);
+		location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		mapView.invalidate();
+	}
+
+	public void onLocationChanged(Location location) {
+		mapOverlays.remove(gpsLoc);
+		mapOverlays.add(gpsLoc);
+		mapView.invalidate();
+	}
+
+	public void onProviderDisabled(String provider) {
+		if (gpsLoc != null){
+			mapOverlays.remove(gpsLoc);
+			gpsLoc.disableMyLocation();
+			mapView.invalidate();
+		}
+	}
+
+	public void onProviderEnabled(String provider) {
+			useGPS();
+			mapView.invalidate();
+	}
+
+	public void onStatusChanged(String provider, int status, Bundle extras) {
 		
-		currentLocationOverlay = new MyLocationOverlay(this, mapView);
-		if (currentLocationOverlay != null)
-			mapOverlays.add(currentLocationOverlay);
+		switch (status) {
+		case LocationProvider.AVAILABLE:
+				mapOverlays.add(gpsLoc);
+			break;
+		
+		case LocationProvider.OUT_OF_SERVICE:
+		case LocationProvider.TEMPORARILY_UNAVAILABLE:
+			if (gpsLoc != null){
+				mapOverlays.remove(gpsLoc);
+			}
+			break;
+		}
+
 	}
 }
