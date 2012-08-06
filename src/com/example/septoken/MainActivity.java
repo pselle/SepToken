@@ -77,9 +77,12 @@ public class MainActivity extends FragmentActivity {
         	if(ID == R.id.CenterCity){
         		
         	}else if(ID == R.id.WestPhiladelphia){
-        		DisplayListFragment thing = (DisplayListFragment) getSupportFragmentManager().findFragmentById(R.id.blank_fragment);
-                ListView list = (ListView) thing.getActivity().findViewById(R.id.list);
-                list.removeAllViewsInLayout();
+        		DisplayListFragment thing = (DisplayListFragment) 
+        				getSupportFragmentManager().findFragmentById(R.id.blank_fragment);
+        		
+        		
+                
+                
                 
                 
                 
