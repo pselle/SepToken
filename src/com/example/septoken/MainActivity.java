@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity {
         public void onLocationChanged(Location location) {
           // Called when a new location is found by the network location provider.
           lastKnownLocation = location;
-    }
+    };
         
     @Override
     public void onCreate(Bundle savedInstanceState) {
