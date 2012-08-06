@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.maps.MapView;
@@ -44,8 +45,7 @@ public class IconItemizedOverlay  extends BalloonItemizedOverlay<OverlayItem> {
 	
 	@Override
 	protected boolean onBalloonTap(int index, OverlayItem item) {
-		Toast.makeText(c, "onBalloonTap for overlay index " + index,
-				Toast.LENGTH_LONG).show();
+		
 		return true;
 	}
 	
