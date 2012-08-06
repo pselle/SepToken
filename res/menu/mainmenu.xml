@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/Regions" android:title="Change Region">
+        <menu >
     <item android:id="@+id/CenterCity" android:title="Center City"/>
     <item android:id="@+id/WestPhiladelphia" android:title="West Philadelphia"/>
     <item android:id="@+id/SouthPhiladelphia" android:title="South Philadelphia"/>
@@ -11,7 +13,7 @@
     <item android:id="@+id/DelawareCounty" android:title="Delaware County"/>
     <item android:id="@+id/MontgomeryCounty" android:title="Montgomery County"/>
     <item android:id="@+id/DelNJersey" android:title="Delware/New Jersey"/>
+        </menu>
+        </item>
     
-    
-
 </menu>

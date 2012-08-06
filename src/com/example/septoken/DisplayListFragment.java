@@ -31,10 +31,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 public class DisplayListFragment extends Fragment {
 	
 	String Region;
+	MergeAdapter finalAdapter;
+	String lastZip;
 /*	
 	private LocationManager locationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
     private String locationProvider = LocationManager.NETWORK_PROVIDER;
@@ -70,7 +73,7 @@ public class DisplayListFragment extends Fragment {
 	private ArrayList<FareLocations> alfl = null;
 	private ListView lstTest;
 	private FareLocationsAdapter flAdapter;
-	
+/*	
 	static DisplayListFragment newinstance(String region) {
 		DisplayListFragment page = new DisplayListFragment();
 		Bundle bundle = new Bundle();
@@ -78,7 +81,7 @@ public class DisplayListFragment extends Fragment {
 		page.setArguments(bundle);
 		return page;
 	}
-
+*/
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment, used for dividers
@@ -88,13 +91,21 @@ public class DisplayListFragment extends Fragment {
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
 		// Initialize ListView
-		lstTest = (ListView) getActivity().findViewById(R.id.list);
-	//	registerForContextMenu(lstTest);
 		alfl = new ArrayList<FareLocations>();
+		lstTest = (ListView) getActivity().findViewById(R.id.list);
+		//Parent Adapter Holding all Views and Adapters
+		finalAdapter = new MergeAdapter();
 		flAdapter = new FareLocationsAdapter(DisplayListFragment.this.getActivity(), R.layout.listrow, alfl);
+		finalAdapter.addView(Header("Hello Keith"));
+		finalAdapter.addAdapter(flAdapter);
+		
+	//	registerForContextMenu(lstTest);
+
 		// Set the above adapter as the adapter of choice for our list
-		lstTest.setAdapter(flAdapter);
+		//lstTest.setAdapter(flAdapter);
+		lstTest.setAdapter(finalAdapter);
 		lstTest.setTextFilterEnabled(false);
 		lstTest.setFastScrollEnabled(true);
 		
@@ -106,7 +117,9 @@ public class DisplayListFragment extends Fragment {
        // double latitude = lastKnownLocation.getLatitude();
         
         // Update data with last known lat/long
-        updateData("[region_id=/philawest/]", false);
+        //updateData("[region_id=/philawest/]", false);
+        updateData("[location near (-75.142763, 39.96552)]", false);
+        
         
         lstTest.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -124,6 +137,14 @@ public class DisplayListFragment extends Fragment {
 
 			}
 		});
+	}
+	
+	private View Header(String string) {
+    	View k = getActivity().getLayoutInflater().inflate(R.layout.listrowheader, null);
+    	TextView title = (TextView) k.findViewById(R.id.HeaderTitle);
+    	title.setText(string);
+
+    	return k;
 	}
 	
 	public void updateData(String search, Boolean location){
@@ -145,6 +166,16 @@ public class DisplayListFragment extends Fragment {
 					fare.location_address = list.get(i).getString("location_address");
 					fare.location_hours = list.get(i).getString("hours");
 					fare.payment_accepted = list.get(i).getString("payment_accepted");
+					fare.zip_code = list.get(i).getString("zip_code");
+					Log.i("zip", list.get(i).getString("zip_code"));
+					
+						String zip = list.get(i).getString("zip_code");
+						
+					
+					
+					
+					
+					
 					//fare.region_id = list.get(i).getString("__id__");
 					CMGeoPoint gp = list.get(i).getGeoPoint("location");
 						if(gp != null){

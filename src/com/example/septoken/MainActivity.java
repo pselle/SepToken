@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
         
@@ -59,7 +60,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.regions, menu);
+        inflater.inflate(R.menu.mainmenu, menu);
         return true;
     }
     
@@ -69,7 +70,6 @@ public class MainActivity extends FragmentActivity {
         	if(ID == R.id.CenterCity){
         		
         	}else if(ID == R.id.WestPhiladelphia){
-        		
         		
         	}else if(ID == R.id.SouthPhiladelphia){
         		
