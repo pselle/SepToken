@@ -182,7 +182,7 @@ public class DisplayMapActivity extends MapActivity implements LocationListener 
 		if (pa.contains("X")){
 			paCorrect += "Train Tickets   ";
 		}
-		if (!pa.equals(""))
+		if (!paCorrect.equals(""))
 			paCorrect = paCorrect.substring(0, paCorrect.lastIndexOf("   "));
 		return paCorrect;
 	}
