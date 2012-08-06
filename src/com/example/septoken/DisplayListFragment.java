@@ -118,7 +118,7 @@ public class DisplayListFragment extends Fragment {
         
         // Update data with last known lat/long
         //updateData("[region_id=/philawest/]", false);
-        updateData("[location near (-75.142763, 39.96552)]", false);
+        updateData("[region_id = \"ccp\"]", false);
         
         
         lstTest.setOnItemClickListener(new OnItemClickListener() {
@@ -129,6 +129,7 @@ public class DisplayListFragment extends Fragment {
 				Intent intent = new Intent(DisplayListFragment.this.getActivity(),
 						DisplayMapActivity.class);
 				intent.putExtra("name", name);
+				intent.putExtra("address", alfl.get(arg2).location_address);
 				intent.putExtra("hours", alfl.get(arg2).location_hours);
 				intent.putExtra("payment_accepted", alfl.get(arg2).payment_accepted);
 				intent.putExtra("latitude", alfl.get(arg2).gps_lat);
@@ -153,7 +154,7 @@ public class DisplayListFragment extends Fragment {
     	//	locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
     	}
 		CMWebService service = AndroidCMWebService.getService().getService();
-		service.asyncLoadObjects(new SimpleCMObjectResponseCallback() {
+		service.asyncSearch(search,new SimpleCMObjectResponseCallback() {
 			@Override
 			public void onCompletion(SimpleCMObjectResponse response) {
 				//System.out.println("Got response!");
