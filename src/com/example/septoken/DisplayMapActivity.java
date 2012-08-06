@@ -167,7 +167,6 @@ public class DisplayMapActivity extends MapActivity implements LocationListener 
 		mMapController.animateTo(new GeoPoint(
 				(maxLatitude + minLatitude) / 2,
 				(maxLongitude + minLongitude) / 2));
-		mMapController.zoomOut();
 		mapView.invalidate();
 		
 	}
