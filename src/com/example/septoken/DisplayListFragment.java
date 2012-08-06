@@ -96,16 +96,16 @@ public class DisplayListFragment extends Fragment {
 		alfl = new ArrayList<FareLocations>();
 		lstTest = (ListView) getActivity().findViewById(R.id.list);
 		//Parent Adapter Holding all Views and Adapters
-		finalAdapter = new MergeAdapter();
+		//finalAdapter = new MergeAdapter();
 		flAdapter = new FareLocationsAdapter(DisplayListFragment.this.getActivity(), R.layout.listrow, alfl);
-		finalAdapter.addView(Header("Hello Keith"));
-		finalAdapter.addAdapter(flAdapter);
+		//finalAdapter.addView(Header("Hello Keith"));
+		//finalAdapter.addAdapter(flAdapter);
 		
 	//	registerForContextMenu(lstTest);
 
 		// Set the above adapter as the adapter of choice for our list
-		//lstTest.setAdapter(flAdapter);
-		lstTest.setAdapter(finalAdapter);
+		lstTest.setAdapter(flAdapter);
+		//lstTest.setAdapter(finalAdapter);
 		lstTest.setTextFilterEnabled(false);
 		lstTest.setFastScrollEnabled(true);
 		
@@ -138,7 +138,7 @@ public class DisplayListFragment extends Fragment {
 			}
 		});
 	}
-	
+/*	
 	private View Header(String string) {
     	View k = getActivity().getLayoutInflater().inflate(R.layout.listrowheader, null);
     	TextView title = (TextView) k.findViewById(R.id.HeaderTitle);
@@ -146,7 +146,7 @@ public class DisplayListFragment extends Fragment {
 
     	return k;
 	}
-	
+*/	
 	public void updateData(String search, Boolean location){
     	// if we're refreshing the location data
     	if(location) {

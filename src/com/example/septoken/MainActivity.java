@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
@@ -54,8 +56,13 @@ public class MainActivity extends FragmentActivity {
           	DisplayListFragment dlf = new DisplayListFragment();
   			fragmentTransaction.add(R.id.blank_fragment, dlf);
             fragmentTransaction.commit();
+
 		}
+        
+        
     }
+    
+    
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,7 +77,18 @@ public class MainActivity extends FragmentActivity {
         	if(ID == R.id.CenterCity){
         		
         	}else if(ID == R.id.WestPhiladelphia){
-        		
+        		DisplayListFragment thing = (DisplayListFragment) getSupportFragmentManager().findFragmentById(R.id.blank_fragment);
+                ListView list = (ListView) thing.getActivity().findViewById(R.id.list);
+                list.removeAllViewsInLayout();
+                
+                
+                
+                
+               // MergeAdapter adapter = (MergeAdapter) list.getAdapter();
+                
+                
+              //  Toast.makeText(getApplicationContext(), adapter.getItem(3).toString(), Toast.LENGTH_LONG).show();
+              //  adapter.notifyDataSetChanged();
         	}else if(ID == R.id.SouthPhiladelphia){
         		
         	}else if(ID == R.id.NorthPhiladelphia){
@@ -102,5 +120,7 @@ public class MainActivity extends FragmentActivity {
 */            
         
     }
+    
+    
     
 }
